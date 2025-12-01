@@ -1,0 +1,41 @@
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+import { getAuth } from "firebase/auth";
+import { getDatabase } from "firebase/database";
+import { getStorage } from "firebase/storage";
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyC7sq9Le-RtGxG9SmxSIcCbBqlH6BsB6BU",
+  authDomain: "piyush-3f536.firebaseapp.com",
+  databaseURL: "https://piyush-3f536-default-rtdb.firebaseio.com",
+  projectId: "piyush-3f536",
+  storageBucket: "piyush-3f536.firebasestorage.app",
+  messagingSenderId: "199407994641",
+  appId: "1:199407994641:web:f95b025f8d9038e8b5aeb0",
+  measurementId: "G-FCBT00LK97"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+
+// Initialize Firebase services
+export const auth = getAuth(app);
+export const database = getDatabase(app);
+export const storage = getStorage(app);
+
+// Initialize Analytics conditionally (only in production and not in test environment)
+let analyticsInstance = null;
+if (typeof window !== 'undefined' && process.env.NODE_ENV === 'production' && !process.env.JEST_WORKER_ID) {
+  try {
+    analyticsInstance = getAnalytics(app);
+  } catch (error) {
+    console.warn('Firebase Analytics initialization failed:', error);
+  }
+}
+
+export const analytics = analyticsInstance;
+
+export default app;
