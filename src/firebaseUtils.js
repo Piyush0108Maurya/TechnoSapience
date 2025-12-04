@@ -521,18 +521,7 @@ export const firebaseDB = {
     }
   },
 
-  // Ban multiple users
-  banMultipleUsers: async (userIds, banned) => {
-    try {
-      const updates = {};
-      userIds.forEach(userId => {
-        updates[`users/${userId}`] = {
-          banned,
-          bannedAt: banned ? new Date().toISOString() : null,
-          updatedAt: new Date().toISOString(),
-        };
-      });
-      
+  
       // Update all users in a single batch
       for (const userId of userIds) {
         const userRef = ref(database, `users/${userId}`);
