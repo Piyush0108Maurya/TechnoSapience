@@ -2,17 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import logo from '../images/logo.png';
 
+const loadingPhases = [
+  { name: 'Initializing Systems', duration: 800 },
+  { name: 'Connecting to Neural Network', duration: 1200 },
+  { name: 'Loading Techno Core', duration: 1000 },
+  { name: 'Calibrating Sapiens AI', duration: 900 },
+  { name: 'System Ready', duration: 400 }
+];
+
 const LoadingScreen = ({ isLoading }) => {
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [currentPhase, setCurrentPhase] = useState('initializing');
-
-  const loadingPhases = [
-    { name: 'Initializing Systems', duration: 800 },
-    { name: 'Connecting to Neural Network', duration: 1200 },
-    { name: 'Loading Techno Core', duration: 1000 },
-    { name: 'Calibrating Sapiens AI', duration: 900 },
-    { name: 'System Ready', duration: 400 }
-  ];
 
   useEffect(() => {
     if (!isLoading) return;

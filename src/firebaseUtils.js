@@ -1,14 +1,12 @@
 import { auth, database } from './firebase';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { 
-  getDatabase, 
   ref, 
   get, 
   set, 
   update, 
   remove,
-  push,
-  serverTimestamp 
+  push
 } from 'firebase/database';
 
 export const firebaseAuth = {
@@ -524,24 +522,17 @@ export const firebaseDB = {
   // Ban multiple users
   banMultipleUsers: async (userIds, banned) => {
     try {
-      const updates = {};
-      userIds.forEach(userId => {
-        updates[`users/${userId}`] = {
-          banned,
-          bannedAt: banned ? new Date().toISOString() : null,
-          updatedAt: new Date().toISOString(),
-        };
-      });
-      
       // Update all users in a single batch
-      for (const userId of userIds) {
-        const userRef = ref(database, `users/${userId}`);
-        await update(userRef, {
-          banned,
-          bannedAt: banned ? new Date().toISOString() : null,
-          updatedAt: new Date().toISOString(),
-        });
-      }
+      await Promise.all(
+        userIds.map(userId => {
+          const userRef = ref(database, `users/${userId}`);
+          return update(userRef, {
+            banned,
+            bannedAt: banned ? new Date().toISOString() : null,
+            updatedAt: new Date().toISOString(),
+          });
+        })
+      );
       
       return { success: true };
     } catch (error) {

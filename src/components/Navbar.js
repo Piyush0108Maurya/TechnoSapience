@@ -104,7 +104,9 @@ const Navbar = () => {
     try {
       localStorage.removeItem('isAuthenticated');
       localStorage.removeItem('userEmail');
+      localStorage.removeItem('userId');
       localStorage.removeItem('userAvatarSeed');
+      localStorage.removeItem('isAdmin');
     } catch (error) {
       console.error('Error clearing localStorage:', error);
     }

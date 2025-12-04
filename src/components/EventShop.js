@@ -44,6 +44,9 @@ const EventShop = ({ cart, addToCart, toggleCart }) => {
         if (result.success) {
           setEventBans(result.data || {});
         }
+      } else {
+        // Clear bans if no user is logged in
+        setEventBans({});
       }
     } catch (error) {
       console.error('Error loading event bans:', error);
@@ -61,6 +64,9 @@ const EventShop = ({ cart, addToCart, toggleCart }) => {
       } catch (error) {
         console.error('Error loading user registrations:', error);
       }
+    } else {
+      // Clear registrations if no user is logged in
+      setUserRegistrations({});
     }
   };
 

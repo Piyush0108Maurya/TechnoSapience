@@ -50,8 +50,34 @@ const AdminPanel = () => {
     }
   }, []);
 
+  // Get available event-specific actions based on selected users and event
+  const getEventBanActions = useCallback(async () => {
+    if (selectedUsers.length === 0 || !selectedEventForBan) {
+      return { canBanFromEvent: false, canUnbanFromEvent: false };
+    }
+
+    try {
+      const results = await Promise.all(
+        selectedUsers.map(userId => 
+          firebaseDB.isUserBannedFromEvent(userId, selectedEventForBan)
+        )
+      );
+
+      const bannedCount = results.filter(result => result.success && result.banned).length;
+      const unbannedCount = results.filter(result => result.success && !result.banned).length;
+
+      return {
+        canBanFromEvent: unbannedCount > 0 && bannedCount === 0, // Can only ban if none are banned
+        canUnbanFromEvent: bannedCount > 0 && unbannedCount === 0, // Can only unban if all are banned
+        mixedBanStatus: bannedCount > 0 && unbannedCount > 0 // Mixed status - show neither button
+      };
+    } catch (error) {
+      console.error('Error checking event ban status:', error);
+      return { canBanFromEvent: false, canUnbanFromEvent: false, mixedBanStatus: false };
+    }
+  }, [selectedUsers, selectedEventForBan]);
+
   // Update event ban actions when selection or event changes
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     const updateEventBanActions = async () => {
       if (selectedUsers.length > 0 && selectedEventForBan) {
@@ -63,7 +89,7 @@ const AdminPanel = () => {
     };
 
     updateEventBanActions();
-  }, [selectedUsers, selectedEventForBan]);
+  }, [selectedUsers, selectedEventForBan, getEventBanActions]);
 
   const loadUsers = async () => {
     setLoadingUsers(true);
@@ -193,33 +219,6 @@ const AdminPanel = () => {
     setBanAction(action);
     setShowBanModal(true);
   };
-
-  // Get available event-specific actions based on selected users and event
-  const getEventBanActions = useCallback(async () => {
-    if (selectedUsers.length === 0 || !selectedEventForBan) {
-      return { canBanFromEvent: false, canUnbanFromEvent: false };
-    }
-
-    try {
-      const results = await Promise.all(
-        selectedUsers.map(userId => 
-          firebaseDB.isUserBannedFromEvent(userId, selectedEventForBan)
-        )
-      );
-
-      const bannedCount = results.filter(result => result.success && result.banned).length;
-      const unbannedCount = results.filter(result => result.success && !result.banned).length;
-
-      return {
-        canBanFromEvent: unbannedCount > 0 && bannedCount === 0, // Can only ban if none are banned
-        canUnbanFromEvent: bannedCount > 0 && unbannedCount === 0, // Can only unban if all are banned
-        mixedBanStatus: bannedCount > 0 && unbannedCount > 0 // Mixed status - show neither button
-      };
-    } catch (error) {
-      console.error('Error checking event ban status:', error);
-      return { canBanFromEvent: false, canUnbanFromEvent: false, mixedBanStatus: false };
-    }
-  }, [selectedUsers, selectedEventForBan]);
 
   // Get appropriate action based on selected users
   const getAvailableActions = () => {
