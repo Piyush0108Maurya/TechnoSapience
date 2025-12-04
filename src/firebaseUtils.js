@@ -522,15 +522,17 @@ export const firebaseDB = {
   },
 
   
-      // Update all users in a single batch
-      for (const userId of userIds) {
-        const userRef = ref(database, `users/${userId}`);
-        await update(userRef, {
-          banned,
-          bannedAt: banned ? new Date().toISOString() : null,
-          updatedAt: new Date().toISOString(),
-        });
-      }
+       // Update all users in a single batch
+      await Promise.all(
+        userIds.map(userId => {
+          const userRef = ref(database, `users/${userId}`);
+          return update(userRef, {
+            banned,
+            bannedAt: banned ? new Date().toISOString() : null,
+            updatedAt: new Date().toISOString(),
+          });
+        })
+      );
       
       return { success: true };
     } catch (error) {
