@@ -8,6 +8,14 @@ import { getStorage } from "firebase/storage";
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 // Use environment variables for security
+
+// Debug: Check if environment variables are loaded
+console.log('Environment Variables Check:');
+console.log('API Key:', process.env.REACT_APP_FIREBASE_API_KEY ? 'Set' : 'NOT SET');
+console.log('Auth Domain:', process.env.REACT_APP_FIREBASE_AUTH_DOMAIN);
+console.log('Database URL:', process.env.REACT_APP_FIREBASE_DATABASE_URL);
+console.log('Project ID:', process.env.REACT_APP_FIREBASE_PROJECT_ID);
+
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
   authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
@@ -18,6 +26,8 @@ const firebaseConfig = {
   appId: process.env.REACT_APP_FIREBASE_APP_ID,
   measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID
 };
+
+console.log('Firebase Config:', firebaseConfig);
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
