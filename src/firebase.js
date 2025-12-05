@@ -10,21 +10,24 @@ import { getStorage } from "firebase/storage";
 // Use environment variables for security
 
 // Debug: Check if environment variables are loaded
-console.log('Environment Variables Check:');
-console.log('API Key:', process.env.REACT_APP_FIREBASE_API_KEY ? 'Set' : 'NOT SET');
-console.log('Auth Domain:', process.env.REACT_APP_FIREBASE_AUTH_DOMAIN);
-console.log('Database URL:', process.env.REACT_APP_FIREBASE_DATABASE_URL);
-console.log('Project ID:', process.env.REACT_APP_FIREBASE_PROJECT_ID);
+console.log('=== Firebase Debug Info ===');
+console.log('NODE_ENV:', process.env.NODE_ENV);
+console.log('API Key exists:', !!process.env.REACT_APP_FIREBASE_API_KEY);
+console.log('API Key length:', process.env.REACT_APP_FIREBASE_API_KEY?.length || 0);
+console.log('API Key first 10 chars:', process.env.REACT_APP_FIREBASE_API_KEY?.substring(0, 10) || 'NOT_SET');
+console.log('Auth Domain:', process.env.REACT_APP_FIREBASE_AUTH_DOMAIN || 'NOT_SET');
+console.log('Project ID:', process.env.REACT_APP_FIREBASE_PROJECT_ID || 'NOT_SET');
+console.log('========================');
 
 const firebaseConfig = {
-  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
-  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
-  databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL,
-  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.REACT_APP_FIREBASE_APP_ID,
-  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY || 'AIzaSyC7sq9Le-RtGxG9SmxSIcCbBqlH6BsB6BU',
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN || 'piyush-3f536.firebaseapp.com',
+  databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL || 'https://piyush-3f536-default-rtdb.firebaseio.com',
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID || 'piyush-3f536',
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET || 'piyush-3f536.firebasestorage.app',
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID || '199407994641',
+  appId: process.env.REACT_APP_FIREBASE_APP_ID || '1:199407994641:web:f95b025f8d9038e8b5aeb0',
+  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID || 'G-FCBT00LK97'
 };
 
 console.log('Firebase Config:', firebaseConfig);
